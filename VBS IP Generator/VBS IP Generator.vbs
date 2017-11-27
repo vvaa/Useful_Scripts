@@ -1,15 +1,17 @@
 '把网段格式的IP生成单个IP列表，类似nmap的-sL功能
 '但是，nmap不支持X.X.X.X-X.X.X.X这种格式，只支持X.X.X.1-255这种
 '本脚本作为这种功能的补充
-'注意：不要有空格等其它字符！运行前删除to.txt，否则结果会追加到ip.txt
+'注意：不要有空格等其它字符！如果运行错误检查下有没有空白行或格式不对
+'用以下正则表达式搜索删除，看有没有其它字符留下
+'\n\d+\.\d+\.\d+\.\d+-\d+\.\d+\.\d+\.\d+\n
 '------------------------------------------------------------------
 
 SrcIpFile_ = "from.txt"	
 DstIpFile_ = "to.txt"
 
 
+CreateFile_ DstIpFile_
 ArrStrAll_ = ReadFile_(SrcIpFile_)
-
 for m = 0 to UBound(ArrStrAll_)
 	WriteFile_ GenIP_(ArrStrAll_(m)) , DstIpFile_
 next
@@ -22,7 +24,7 @@ Msgbox "Done!"
 Function GenIP_(StrIn_)
 '单个IP生成函数，结果为数组
 	IpMin_ = left(StrIn_,instr(StrIn_,"-")-1 )
-	IpMax_= right(StrIn_,len(StrIn_)-instr(StrIn_,"-"))
+	IpMax_ = right(StrIn_,len(StrIn_)-instr(StrIn_,"-"))
 	i = 0
 	for a = GenIpNum_(IpMin_) to GenIpNum_(IpMax_)
 		redim preserve ArrTmp_(i)
@@ -78,6 +80,14 @@ Sub WriteFile_(Arr_(), Fname_)		'将数组写入到文件
 		FILE_.Write Arr_(i) & vbCrLf
 	Next
 	FILE_.Close
+	Set FSO_ = Nothing
+	Set FILE_ = Nothing	
+End Sub
+
+Sub CreateFile_(Fname_)		
+	Set FSO_ = CreateObject("Scripting.FileSystemObject")
+	Set FILE_ = FSO_.OpenTextFile(Fname_, 2, True) '第二个参数2表示覆盖
+	FILE_.Write ""
 	Set FSO_ = Nothing
 	Set FILE_ = Nothing	
 End Sub
