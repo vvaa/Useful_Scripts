@@ -1,8 +1,8 @@
-'å°†æ–‡æœ¬æ–‡ä»¶åˆ†å‰²ï¼ŒæŒ‰è¡Œæ•°åˆ†å‰²ï¼å°†æ–‡ä»¶åˆ†æˆè¡Œæ•°ç›¸ç­‰çš„æ–‡ä»¶ã€‚
+'½«ÎÄ±¾ÎÄ¼ş·Ö¸î£¬°´ĞĞÊı·Ö¸î£¡½«ÎÄ¼ş·Ö³ÉĞĞÊıÏàµÈµÄÎÄ¼ş¡£
 '------------------------------------------------------------------
 
-SplitNum_ = 4		'è¦åˆ†å‰²çš„æ•°é‡
-SrcFile_ = "Source.txt"		'è¦åˆ†å‰²çš„æºæ–‡ä»¶
+SplitNum_ = 6		'Òª·Ö¸îµÄÊıÁ¿
+SrcFile_ = "Source.txt"		'Òª·Ö¸îµÄÔ´ÎÄ¼ş
 
 
 
@@ -36,7 +36,7 @@ Function GetPartArr_(ArrIn_(),NumAll_,NumPart_)
  	GetPartArr_ = ArrTmp_
 End Function
 
-Function ReadFile_(Fname_)		'è¯»å–æ–‡ä»¶åˆ°æ•°ç»„
+Function ReadFile_(Fname_)		'¶ÁÈ¡ÎÄ¼şµ½Êı×é
 	Set FSO_ = CreateObject("Scripting.FileSystemObject")
 	Set FILE_ = FSO_.OpenTextFile(Fname_, 1)
 	i = 0
@@ -51,7 +51,7 @@ Function ReadFile_(Fname_)		'è¯»å–æ–‡ä»¶åˆ°æ•°ç»„
  	ReadFile_ = Arr_
 End Function
 
-Sub WriteFile_(ArrIn_(), Fname_)		'å°†æ•°ç»„å†™å…¥åˆ°æ–‡ä»¶
+Sub WriteFile_(ArrIn_(), Fname_)		'½«Êı×éĞ´Èëµ½ÎÄ¼ş
 	Set FSO_ = CreateObject("Scripting.FileSystemObject")
 	Set FILE_ = FSO_.OpenTextFile(Fname_, 2, True) 
 	For i = 0 To UBound(ArrIn_)
