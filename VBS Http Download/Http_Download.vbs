@@ -1,12 +1,12 @@
-'åŸå› å’Œç›®çš„ï¼šä¸ºäº†æ³¨å†Œä¸€ä¸ªgithubçš„ç¨€ç¼ºç”¨æˆ·åï¼Œä½†æ˜¯ç»å¤§å¤šæ•°è¢«æ³¨å†Œæ‰äº†ï¼Œæ‰€ä»¥å†™ä¸ªè„šæœ¬æ‰¹é‡ä¸‹è½½
-'githubçš„ç”¨æˆ·ä¸»é¡µ:https://github.com/XXXï¼Œç„¶åç”¨FileLocatorç­‰å·¥å…·æ‰¾å‡º404å¯¹åº”çš„åå­—ã€‚å…¶å®ä¸å­˜åœ¨
-'çš„é¡µé¢ä»æ–‡ä»¶å¤§å°å°±å¯ä»¥çœ‹å‡ºæ¥äº†ã€‚
-'è„šæœ¬è¿è¡Œåï¼Œä¼šåœ¨Resultç›®å½•ä¸‹ç”Ÿæˆhtmlæ–‡ä»¶ï¼Œsource.txtæ–‡ä»¶æ˜¯è¦ä¸‹è½½çš„é¡µé¢ã€‚
+'Ô­ÒòºÍÄ¿µÄ£ºÎªÁË×¢²áÒ»¸ögithubµÄÏ¡È±ÓÃ»§Ãû£¬µ«ÊÇ¾ø´ó¶àÊı±»×¢²áµôÁË£¬ËùÒÔĞ´¸ö½Å±¾ÅúÁ¿ÏÂÔØ
+'githubµÄÓÃ»§Ö÷Ò³:https://github.com/XXX£¬È»ºóÓÃFileLocatorµÈ¹¤¾ßÕÒ³ö404¶ÔÓ¦µÄÃû×Ö¡£ÆäÊµ²»´æÔÚ
+'µÄÒ³Ãæ´ÓÎÄ¼ş´óĞ¡¾Í¿ÉÒÔ¿´³öÀ´ÁË¡£
+'½Å±¾ÔËĞĞºó£¬»áÔÚResultÄ¿Â¼ÏÂÉú³ÉhtmlÎÄ¼ş£¬source.txtÎÄ¼şÊÇÒªÏÂÔØµÄÒ³Ãæ¡£
 '------------------------------------------------------------------
 
 BaseUrl_ = "https://github.com/"
-SrcStr_ = "Source.txt"		'ç”¨æ¥è¯»å–çš„æºæ–‡ä»¶
-DstFolder_ = "Result"		'ä¿å­˜ç»“æœçš„ç›®å½•
+SrcStr_ = "Source.txt"		'ÓÃÀ´¶ÁÈ¡µÄÔ´ÎÄ¼ş
+DstFolder_ = "Result"		'±£´æ½á¹ûµÄÄ¿Â¼
 
 
 On Error Resume Next
@@ -20,7 +20,7 @@ Msgbox "Done!"
 
 '------------------------------------------------------------------
 
-Sub HttpDwnLoader_(HttpUrl_,Fname_)		'ä¸‹è½½httpåˆ°æ–‡ä»¶
+Sub HttpDwnLoader_(HttpUrl_,Fname_)		'ÏÂÔØhttpµ½ÎÄ¼ş
 	Set xaPost = CreateObject("MSXML2.ServerXMLHTTP")
 	Set sGet = CreateObject("ADODB.Stream")
 	sGet.Mode = 3
@@ -33,7 +33,7 @@ Sub HttpDwnLoader_(HttpUrl_,Fname_)		'ä¸‹è½½httpåˆ°æ–‡ä»¶
 	sGet.Close
 End Sub
 
-Function ReadFile_(Fname_)		'è¯»å–æ–‡ä»¶åˆ°æ•°ç»„
+Function ReadFile_(Fname_)		'¶ÁÈ¡ÎÄ¼şµ½Êı×é
 	Set FSO_ = CreateObject("Scripting.FileSystemObject")
 	Set FILE_ = FSO_.OpenTextFile(Fname_, 1)
 	i = 0

