@@ -1,4 +1,8 @@
 说明：收集一些自己常用的vbs函数，方便复用
+为了不弄混，约定：
+过程用sub_开头，
+函数用fun_开通
+变量用var_开头
 
 ==============================
 开头
@@ -9,38 +13,38 @@ On Error Resume Next
 
 打开文本文件
 
-Set FSO_ = CreateObject("Scripting.FileSystemObject")
-Set FILE_ = FSO_.OpenTextFile(Txt_) 
-S_ = FILE_.ReadAll
+Set var_fso = CreateObject("Scripting.FileSystemObject")
+Set var_file = var_fso.OpenTextFile(var_txt) 
+var_s = var_file.ReadAll
 
 ==============================
 写入文本文件
 
-Set FILE_ = FSO_.CreateTextFile(Txt_)
-FILE_.Write S_
-FILE_.Close
+Set var_file = var_fso.CreateTextFile(var_txt)
+var_file.Write var_s
+var_file.Close
 
 ==============================
 替换文本
 
-S_ = Replace(S_, Txt1_, Txt2_)
+var_s = Replace(var_s, var_txt1, var_txt2)
 
 ==============================
 递增替换，增量替换，序号替换
 第一个1表示从1开始，第二个1表示每次替换1个
 
-For I_ = 1 to 100
-	S_ = Replace(S_, Txt1_, I_, 1, 1)
+For var_i = 1 to 100
+	var_s = Replace(var_s, var_txt1, var_i, 1, 1)
 Next
 
 ==============================
 正则表达式
-Set Re_ = New RegExp
-Re_.Global = True
-Re_.IgnoreCase = False
-Re_.Pattern = "\d+\n"
-For Each M_ in Re_.Execute(S_)
-	Msgbox M_
+Set var_re = New RegExp
+var_re.Global = True
+var_re.IgnoreCase = False
+var_re.Pattern = "\d+\n"
+For Each var_m in var_re.Execute(var_s)
+	Msgbox var_m
 Next
 
 ==============================
@@ -53,10 +57,10 @@ Msgbox """"
 传入参数需完整路径
 
 
-Sub HisZip(ByVal mySourceDir, ByVal myZipFile) 
+Sub sub_hiszip(ByVal mySourceDir, ByVal sub_myzipFile) 
 	Set fso = CreateObject("Scripting.FileSystemObject") 
 	
-	If fso.GetExtensionName(myZipFile) <> "zip" Then 
+	If fso.GetExtensionName(sub_myzipFile) <> "zip" Then 
 		Exit Sub 
 	ElseIf fso.FolderExists(mySourceDir) Then 
 		FType = "Folder" 
@@ -68,7 +72,7 @@ Sub HisZip(ByVal mySourceDir, ByVal myZipFile)
 		Exit Sub 
 	End If
 	
-	Set f = fso.CreateTextFile(myZipFile, True) 
+	Set f = fso.CreateTextFile(sub_myzipFile, True) 
 	f.Write "PK" & Chr(5) & Chr(6) & String(18, Chr(0)) 
 	f.Close 
 	Set objShell = CreateObject("Shell.Application") 
@@ -80,7 +84,7 @@ Sub HisZip(ByVal mySourceDir, ByVal myZipFile)
 	Set objSource = objShell.NameSpace(FolderPath) 
 	Set objFolderItem = objSource.ParseName(FileName) 
 	End Select 
-	Set objTarget = objShell.NameSpace(myZipFile) 
+	Set objTarget = objShell.NameSpace(sub_myzipFile) 
 	intOptions = 256 
 	objTarget.CopyHere objFolderItem, intOptions 
 	Do 
@@ -90,65 +94,67 @@ End Sub
 
 以下为改版为相对路径
 
-Sub MyZip(Scr_, Dst_ )
+Sub sub_myzip(var_src, var_dst )
 
-	Path_ = createobject("Scripting.FileSystemObject").GetFolder(".").Path
-	Scr_ = Path_ & "\" & Scr_
-	Dst_ = Path_ & "\" & Dst_
-	HisZip Scr_, Dst_
+	var_path = createobject("Scripting.FileSystemObject").GetFolder(".").Path
+	var_src = var_path & "\" & var_src
+	var_dst = var_path & "\" & var_dst
+	sub_hiszip var_src, var_dst
 	
 End Sub
 
 
 ==============================
 获取当前路径
-Path_ = Createobject("Scripting.FileSystemObject").GetFolder(".").Path
-Msgbox Path_
+var_path = Createobject("Scripting.FileSystemObject").GetFolder(".").Path
+Msgbox var_path
+
+
 ==============================
 删除文件
-Sub DeleteFile_(Fname_)			'删除文件
-	Set FSO_ = CreateObject("Scripting.FileSystemObject")
-	Set FILE_ = FSO_.GetFile(Fname_)
-	FILE_.attributes = 0
-	FILE_.delete
+Sub sub_deletefile(var_filename)			'删除文件
+	Set var_fso = CreateObject("Scripting.FileSystemObject")
+	Set var_file = var_fso.GetFile(var_filename)
+	var_file.attributes = 0
+	var_file.delete
 End Sub
 
 ==============================
 创建文件夹
-Sub CreateFolder_(Fname_)
-	Set FSO_ = CreateObject("Scripting.FileSystemObject")
-	Set FILE_ = FSO_.CreateFolder(Fname_)
-	Set FSO_ = Nothing
+Sub sub_createfolder(var_filename)
+	Set var_fso = CreateObject("Scripting.FileSystemObject")
+	Set var_file = var_fso.CreateFolder(var_filename)
+	Set var_fso = Nothing
 End Sub
 
 ==============================
 将数组逐行写入到文件
-Sub WriteFile_(ArrIn_(), Fname_)		'将数组写入到文件
-	Set FSO_ = CreateObject("Scripting.FileSystemObject")
-	Set FILE_ = FSO_.OpenTextFile(Fname_, 2, True) 
-	For i = 0 To UBound(ArrIn_)
-		FILE_.WriteLine ArrIn_(i)
+Sub sub_writefile(var_arrin(), var_filename)		'将数组写入到文件
+	Set var_fso = CreateObject("Scripting.FileSystemObject")
+	Set var_file = var_fso.OpenTextFile(var_filename, 2, True) 
+	For i = 0 To UBound(var_arrin)
+		var_file.WriteLine var_arrin(i)
 	Next
-	FILE_.Close
-	Set FSO_ = Nothing
-	Set FILE_ = Nothing	
+	var_file.Close
+	Set var_fso = Nothing
+	Set var_file = Nothing	
 End Sub
 
 ==============================
 逐行读取文本文件到数组
-Function ReadFile_(Fname_)		'读取文件到数组
-	Set FSO_ = CreateObject("Scripting.FileSystemObject")
-	Set FILE_ = FSO_.OpenTextFile(Fname_, 1)
+Function Readvar_file(var_filename)		'读取文件到数组
+	Set var_fso = CreateObject("Scripting.FileSystemObject")
+	Set var_file = var_fso.OpenTextFile(var_filename, 1)
 	i = 0
-	Do Until FILE_.AtEndOfStream
+	Do Until var_file.AtEndOfStream
 		redim preserve Arr_(i)
-		Arr_(i) = FILE_.ReadLine
+		Arr_(i) = var_file.ReadLine
 		i = i + 1
 	Loop
-	FILE_.Close
-	Set FSO_ = Nothing
-	Set FILE_ = Nothing	
- 	ReadFile_ = Arr_
+	var_file.Close
+	Set var_fso = Nothing
+	Set var_file = Nothing	
+ 	Readvar_file = Arr_
 End Function
 ==============================
 示例代码：分割文本文件为多个文件
@@ -156,65 +162,65 @@ End Function
 '将文本文件分割，按行数分割！将文件分成行数相等的文件。
 '------------------------------------------------------------------
 
-SplitNum_ = 6		'要分割的数量
-SrcFile_ = "Source.txt"		'要分割的源文件
+SplitNuvar_m = 6		'要分割的数量
+Srcvar_file = "Source.txt"		'要分割的源文件
 
 
 
 'On Error Resume Next
-Arr1_ = ReadFile_(SrcFile_)
-For n = 1 to SplitNum_
-	WriteFile_ GetPartArr_(Arr1_,SplitNum_,n) , n & ".txt"
+Arr1_ = Readvar_file(Srcvar_file)
+For n = 1 to SplitNuvar_m
+	sub_writefile GetPartArr_(Arr1_,SplitNuvar_m,n) , n & ".txt"
 Next
 
 Msgbox "Done!"
 
 '------------------------------------------------------------------
 
-Function GetPartArr_(ArrIn_(),NumAll_,NumPart_)	
-	BlockSize_ = (Ubound(ArrIn_)+1) \ NumAll_
+Function GetPartArr_(var_arrin(),NumAll_,NumPart_)	
+	BlockSize_ = (Ubound(var_arrin)+1) \ NumAll_
 	If NumAll_ = NumPart_ Then
 		j = 0
-		For k = BlockSize_ * (NumPart_-1)  to Ubound(ArrIn_)
+		For k = BlockSize_ * (NumPart_-1)  to Ubound(var_arrin)
 			redim preserve ArrTmp_(j)
-			ArrTmp_(j) = ArrIn_(k)
+			ArrTmp_(j) = var_arrin(k)
 			j = j + 1
 		Next
 	Else
 		j = 0
 		For k = BlockSize_ * (NumPart_-1) to BlockSize_ * NumPart_
 			redim preserve ArrTmp_(j)
-			ArrTmp_(j) = ArrIn_(k)
+			ArrTmp_(j) = var_arrin(k)
 			j = j + 1
 		Next
 	End If
  	GetPartArr_ = ArrTmp_
 End Function
 
-Function ReadFile_(Fname_)		'读取文件到数组
-	Set FSO_ = CreateObject("Scripting.FileSystemObject")
-	Set FILE_ = FSO_.OpenTextFile(Fname_, 1)
+Function Readvar_file(var_filename)		'读取文件到数组
+	Set var_fso = CreateObject("Scripting.FileSystemObject")
+	Set var_file = var_fso.OpenTextFile(var_filename, 1)
 	i = 0
-	Do Until FILE_.AtEndOfStream
+	Do Until var_file.AtEndOfStream
 		redim preserve Arr_(i)
-		Arr_(i) = FILE_.ReadLine
+		Arr_(i) = var_file.ReadLine
 		i = i + 1
 	Loop
-	FILE_.Close
-	Set FSO_ = Nothing
-	Set FILE_ = Nothing	
- 	ReadFile_ = Arr_
+	var_file.Close
+	Set var_fso = Nothing
+	Set var_file = Nothing	
+ 	Readvar_file = Arr_
 End Function
 
-Sub WriteFile_(ArrIn_(), Fname_)		'将数组写入到文件
-	Set FSO_ = CreateObject("Scripting.FileSystemObject")
-	Set FILE_ = FSO_.OpenTextFile(Fname_, 2, True) 
-	For i = 0 To UBound(ArrIn_)
-		FILE_.WriteLine ArrIn_(i)
+Sub sub_writefile(var_arrin(), var_filename)		'将数组写入到文件
+	Set var_fso = CreateObject("Scripting.FileSystemObject")
+	Set var_file = var_fso.OpenTextFile(var_filename, 2, True) 
+	For i = 0 To UBound(var_arrin)
+		var_file.WriteLine var_arrin(i)
 	Next
-	FILE_.Close
-	Set FSO_ = Nothing
-	Set FILE_ = Nothing	
+	var_file.Close
+	Set var_fso = Nothing
+	Set var_file = Nothing	
 End Sub
 
 
@@ -222,15 +228,15 @@ End Sub
 ==============================
 合并文本文件
 
-Sub MergeFile_(SrcFname_, DstFname_)		'合并文本文件
-	Set FSO_ = CreateObject("Scripting.FileSystemObject")
-	Set FileSrc_ = FSO_.OpenTextFile(SrcFname_, 1, True, -2)
-	Set FileDst_ = FSO_.OpenTextFile(DstFname_, 8, True)
+Sub Mergevar_file(Srcvar_filename, Dstvar_filename)		'合并文本文件
+	Set var_fso = CreateObject("Scripting.FileSystemObject")
+	Set FileSrc_ = var_fso.OpenTextFile(Srcvar_filename, 1, True, -2)
+	Set Filevar_dst = var_fso.OpenTextFile(Dstvar_filename, 8, True)
 	Do Until FileSrc_.AtEndOfStream
-		FileDst_.WriteLine(FileSrc_.Readline)
+		Filevar_dst.WriteLine(FileSrc_.Readline)
 	Loop
 	FileSrc_.Close
-	FileDst_.Close
+	Filevar_dst.Close
 End Sub
 
 ==============================
@@ -247,20 +253,20 @@ DeleteTempOrNot_ = 0		'是否删除中途产生的1.txt、2.txt等文件
 
 On Error Resume Next
 
-Arr1_ = ReadFile_(SrcStr_)
+Arr1_ = Readvar_file(SrcStr_)
 For n = 1 To CombLenth_		'生成1.txt、2.txt等文件
 	If n = 1 Then
-		WriteFile_ Arr1_, "1.txt"
+		sub_writefile Arr1_, "1.txt"
 	Else
-		WriteFile_ PwdGen( Arr1_ , ReadFile_((n-1) & ".txt") ) , n & ".txt"
+		sub_writefile PwdGen( Arr1_ , Readvar_file((n-1) & ".txt") ) , n & ".txt"
 	End If
 Next
 
-DeleteFile_ DstStr_
+sub_deletefile DstStr_
 For n = 1 To CombLenth_		'合并到一个文件并删除临时文件
-	MergeFile_ n & ".txt" , DstStr_
+	Mergevar_file n & ".txt" , DstStr_
 	If DeleteTempOrNot_ Then
-		DeleteFile_	n & ".txt"
+		sub_deletefile	n & ".txt"
 	End If
 Next
 
@@ -283,44 +289,44 @@ Function PwdGen(Arr1_(), Arr2_())		'密码生成函数，将两个数组组合成新数组
 	PwdGen = Arr3_
 End Function
 
-Function ReadFile_(Fname_)		'读取文件到数组
-	Set FSO_ = CreateObject("Scripting.FileSystemObject")
-	Set FILE_ = FSO_.OpenTextFile(Fname_, 1)
+Function Readvar_file(var_filename)		'读取文件到数组
+	Set var_fso = CreateObject("Scripting.FileSystemObject")
+	Set var_file = var_fso.OpenTextFile(var_filename, 1)
 	i = 0
-	Do Until FILE_.AtEndOfStream
+	Do Until var_file.AtEndOfStream
 		redim preserve Arr_(i)
-		Arr_(i) = FILE_.ReadLine
+		Arr_(i) = var_file.ReadLine
 		i = i + 1
 	Loop
-	FILE_.Close
- 	ReadFile_ = Arr_
+	var_file.Close
+ 	Readvar_file = Arr_
 End Function
 
-Sub WriteFile_(Arr_(), Fname_)		'将数组写入到文件
-	Set FSO_ = CreateObject("Scripting.FileSystemObject")
-	Set FILE_ = FSO_.OpenTextFile(Fname_, 2, True)
+Sub sub_writefile(Arr_(), var_filename)		'将数组写入到文件
+	Set var_fso = CreateObject("Scripting.FileSystemObject")
+	Set var_file = var_fso.OpenTextFile(var_filename, 2, True)
 	For i = 0 To UBound(Arr_)
-		FILE_.Write Arr_(i) & vbCrLf
+		var_file.Write Arr_(i) & vbCrLf
 	Next
 End Sub
 
-Sub MergeFile_(SrcFname_, DstFname_)		'合并文本文件
-	Set FSO_ = CreateObject("Scripting.FileSystemObject")
-	Set FileSrc_ = FSO_.OpenTextFile(SrcFname_, 1, True, -2)
-	Set FileDst_ = FSO_.OpenTextFile(DstFname_, 8, True)
+Sub Mergevar_file(Srcvar_filename, Dstvar_filename)		'合并文本文件
+	Set var_fso = CreateObject("Scripting.FileSystemObject")
+	Set FileSrc_ = var_fso.OpenTextFile(Srcvar_filename, 1, True, -2)
+	Set Filevar_dst = var_fso.OpenTextFile(Dstvar_filename, 8, True)
 	Do Until FileSrc_.AtEndOfStream
-		FileDst_.WriteLine(FileSrc_.Readline)
+		Filevar_dst.WriteLine(FileSrc_.Readline)
 	Loop
 	FileSrc_.Close
-	FileDst_.Close
+	Filevar_dst.Close
 End Sub
 
-Sub DeleteFile_(Fname_)			'删除文件
-	Set FSO_ = CreateObject("Scripting.FileSystemObject")
-	Set FILE_ = FSO_.GetFile(Fname_)
-	FILE_.attributes = 0
-	FILE_.delete
-	FILE_.Close
+Sub sub_deletefile(var_filename)			'删除文件
+	Set var_fso = CreateObject("Scripting.FileSystemObject")
+	Set var_file = var_fso.GetFile(var_filename)
+	var_file.attributes = 0
+	var_file.delete
+	var_file.Close
 End Sub
 
 ==============================
@@ -329,44 +335,44 @@ End Sub
 '注意：不要有空格等其它字符！
 '------------------------------------------------------------------
 
-SrcIpFile_ = "from.txt"	
-DstIpFile_ = "to.txt"
+SrcIpvar_file = "from.txt"	
+DstIpvar_file = "to.txt"
 
 
-ArrIpAll_ = ReadFile_(SrcIpFile_)
+ArrIpAll_ = Readvar_file(SrcIpvar_file)
 
-Set FSO_ = CreateObject("Scripting.FileSystemObject")
-Set FILE_ = FSO_.OpenTextFile(DstIpFile_, 2, True) '第二个参数8表示追加
+Set var_fso = CreateObject("Scripting.FileSystemObject")
+Set var_file = var_fso.OpenTextFile(DstIpvar_file, 2, True) '第二个参数8表示追加
 
 For m = 0 to UBound(ArrIpAll_)
-	FILE_.WriteLine GenIpNum_(ArrIpAll_(m))
+	var_file.WriteLine GenIpNuvar_m(ArrIpAll_(m))
 Next
 
 Msgbox "Done!"
 
 '------------------------------------------------------------------
 
-Function GenIpNum_(StrIn_)
+Function GenIpNuvar_m(StrIn_)
 '数字IP格式生成函数
 	ArrTmp_ = split(StrIn_, ".") 
 	Redim Preserve ArrTmp_(3)
-	GenIpNum_ = ArrTmp_(0) * 16777216 + ArrTmp_(1) * 65536 + ArrTmp_(2) * 256 + ArrTmp_(3) 
+	GenIpNuvar_m = ArrTmp_(0) * 16777216 + ArrTmp_(1) * 65536 + ArrTmp_(2) * 256 + ArrTmp_(3) 
 End Function
 
 
-Function ReadFile_(Fname_)		'读取文件到数组
-	Set FSO_ = CreateObject("Scripting.FileSystemObject")
-	Set FILE_ = FSO_.OpenTextFile(Fname_, 1)
+Function Readvar_file(var_filename)		'读取文件到数组
+	Set var_fso = CreateObject("Scripting.FileSystemObject")
+	Set var_file = var_fso.OpenTextFile(var_filename, 1)
 	i = 0
-	Do Until FILE_.AtEndOfStream
+	Do Until var_file.AtEndOfStream
 		redim preserve Arr_(i)
-		Arr_(i) = FILE_.ReadLine
+		Arr_(i) = var_file.ReadLine
 		i = i + 1
 	Loop
-	FILE_.Close
-	Set FSO_ = Nothing
-	Set FILE_ = Nothing	
- 	ReadFile_ = Arr_
+	var_file.Close
+	Set var_fso = Nothing
+	Set var_file = Nothing	
+ 	Readvar_file = Arr_
 End Function
 
 
@@ -374,17 +380,17 @@ End Function
 
 '把数字IP转成X.X.X.X格式
 '------------------------------------------------------------------
-SrcIpFile_ = "from.txt"	
-DstIpFile_ = "to.txt"
+SrcIpvar_file = "from.txt"	
+DstIpvar_file = "to.txt"
 
 
-ArrIpAll_ = ReadFile_(SrcIpFile_)
+ArrIpAll_ = Readvar_file(SrcIpvar_file)
 
-Set FSO_ = CreateObject("Scripting.FileSystemObject")
-Set FILE_ = FSO_.OpenTextFile(DstIpFile_, 2, True) '第二个参数8表示追加
+Set var_fso = CreateObject("Scripting.FileSystemObject")
+Set var_file = var_fso.OpenTextFile(DstIpvar_file, 2, True) '第二个参数8表示追加
 
 For m = 0 to UBound(ArrIpAll_)
-	FILE_.WriteLine GenStdIp_(ArrIpAll_(m))
+	var_file.WriteLine GenStdIp_(ArrIpAll_(m))
 Next
 
 Msgbox "Done!"
@@ -403,19 +409,19 @@ Function GenStdIp_(NumIn_)
 End Function
 
 
-Function ReadFile_(Fname_)		'读取文件到数组
-	Set FSO_ = CreateObject("Scripting.FileSystemObject")
-	Set FILE_ = FSO_.OpenTextFile(Fname_, 1)
+Function Readvar_file(var_filename)		'读取文件到数组
+	Set var_fso = CreateObject("Scripting.FileSystemObject")
+	Set var_file = var_fso.OpenTextFile(var_filename, 1)
 	i = 0
-	Do Until FILE_.AtEndOfStream
+	Do Until var_file.AtEndOfStream
 		redim preserve Arr_(i)
-		Arr_(i) = FILE_.ReadLine
+		Arr_(i) = var_file.ReadLine
 		i = i + 1
 	Loop
-	FILE_.Close
-	Set FSO_ = Nothing
-	Set FILE_ = Nothing	
- 	ReadFile_ = Arr_
+	var_file.Close
+	Set var_fso = Nothing
+	Set var_file = Nothing	
+ 	Readvar_file = Arr_
 End Function
 
 
@@ -431,14 +437,14 @@ IP生成器：
 '\n\d+\.\d+\.\d+\.\d+-\d+\.\d+\.\d+\.\d+\n
 '------------------------------------------------------------------
 
-SrcIpFile_ = "from.txt"	
-DstIpFile_ = "to.txt"
+SrcIpvar_file = "from.txt"	
+DstIpvar_file = "to.txt"
 
 
-CreateFile_ DstIpFile_
-ArrStrAll_ = ReadFile_(SrcIpFile_)
+Createvar_file DstIpvar_file
+ArrStrAll_ = Readvar_file(SrcIpvar_file)
 for m = 0 to UBound(ArrStrAll_)
-	WriteFile_ GenIP_(ArrStrAll_(m)) , DstIpFile_
+	sub_writefile GenIP_(ArrStrAll_(m)) , DstIpvar_file
 next
 
 Msgbox "Done!"
@@ -451,7 +457,7 @@ Function GenIP_(StrIn_)
 	IpMin_ = left(StrIn_,instr(StrIn_,"-")-1 )
 	IpMax_ = right(StrIn_,len(StrIn_)-instr(StrIn_,"-"))
 	i = 0
-	for a = GenIpNum_(IpMin_) to GenIpNum_(IpMax_)
+	for a = GenIpNuvar_m(IpMin_) to GenIpNuvar_m(IpMax_)
 		redim preserve ArrTmp_(i)
 		ArrTmp_(i) = GenStdIp_(a)
 		i = i + 1
@@ -463,11 +469,11 @@ Function GenIP_(StrIn_)
 End Function
 
 
-Function GenIpNum_(StrIn_)
+Function GenIpNuvar_m(StrIn_)
 '数字IP格式生成函数
 	ArrTmp_ = split(StrIn_, ".") 
 	Redim Preserve ArrTmp_(3)
-	GenIpNum_ = ArrTmp_(0) * 16777216 + ArrTmp_(1) * 65536 + ArrTmp_(2) * 256 + ArrTmp_(3)
+	GenIpNuvar_m = ArrTmp_(0) * 16777216 + ArrTmp_(1) * 65536 + ArrTmp_(2) * 256 + ArrTmp_(3)
 End Function
 
 
@@ -483,38 +489,38 @@ Function GenStdIp_(NumIn_)
 End Function
 
 
-Function ReadFile_(Fname_)		'读取文件到数组
-	Set FSO_ = CreateObject("Scripting.FileSystemObject")
-	Set FILE_ = FSO_.OpenTextFile(Fname_, 1)
+Function Readvar_file(var_filename)		'读取文件到数组
+	Set var_fso = CreateObject("Scripting.FileSystemObject")
+	Set var_file = var_fso.OpenTextFile(var_filename, 1)
 	i = 0
-	Do Until FILE_.AtEndOfStream
+	Do Until var_file.AtEndOfStream
 		redim preserve Arr_(i)
-		Arr_(i) = FILE_.ReadLine
+		Arr_(i) = var_file.ReadLine
 		i = i + 1
 	Loop
-	FILE_.Close
-	Set FSO_ = Nothing
-	Set FILE_ = Nothing	
- 	ReadFile_ = Arr_
+	var_file.Close
+	Set var_fso = Nothing
+	Set var_file = Nothing	
+ 	Readvar_file = Arr_
 End Function
 
-Sub WriteFile_(Arr_(), Fname_)		'将数组写入到文件
-	Set FSO_ = CreateObject("Scripting.FileSystemObject")
-	Set FILE_ = FSO_.OpenTextFile(Fname_, 8, True) '第二个参数8表示追加
+Sub sub_writefile(Arr_(), var_filename)		'将数组写入到文件
+	Set var_fso = CreateObject("Scripting.FileSystemObject")
+	Set var_file = var_fso.OpenTextFile(var_filename, 8, True) '第二个参数8表示追加
 	For i = 0 To UBound(Arr_)
-		FILE_.Write Arr_(i) & vbCrLf
+		var_file.Write Arr_(i) & vbCrLf
 	Next
-	FILE_.Close
-	Set FSO_ = Nothing
-	Set FILE_ = Nothing	
+	var_file.Close
+	Set var_fso = Nothing
+	Set var_file = Nothing	
 End Sub
 
-Sub CreateFile_(Fname_)		
-	Set FSO_ = CreateObject("Scripting.FileSystemObject")
-	Set FILE_ = FSO_.OpenTextFile(Fname_, 2, True) '第二个参数2表示覆盖
-	FILE_.Write ""
-	Set FSO_ = Nothing
-	Set FILE_ = Nothing	
+Sub Createvar_file(var_filename)		
+	Set var_fso = CreateObject("Scripting.FileSystemObject")
+	Set var_file = var_fso.OpenTextFile(var_filename, 2, True) '第二个参数2表示覆盖
+	var_file.Write ""
+	Set var_fso = Nothing
+	Set var_file = Nothing	
 End Sub
 
 ==============================
@@ -532,8 +538,8 @@ DstFolder_ = "Result"		'保存结果的目录
 
 
 On Error Resume Next
-CreateFolder_ DstFolder_
-Arr1_ = ReadFile_(SrcStr_)
+sub_createfolder DstFolder_
+Arr1_ = Readvar_file(SrcStr_)
 For n = 0 to Ubound(Arr1_)
 	HttpDwnLoader_ BaseUrl_ & Arr1_(n) , DstFolder_ & "\" & Arr1_(n) & ".html"
 Next
@@ -542,7 +548,7 @@ Msgbox "Done!"
 
 '------------------------------------------------------------------
 
-Sub HttpDwnLoader_(HttpUrl_,Fname_)		'下载http到文件
+Sub HttpDwnLoader_(HttpUrl_,var_filename)		'下载http到文件
 	Set xaPost = CreateObject("MSXML2.ServerXMLHTTP")
 	Set sGet = CreateObject("ADODB.Stream")
 	sGet.Mode = 3
@@ -551,28 +557,28 @@ Sub HttpDwnLoader_(HttpUrl_,Fname_)		'下载http到文件
 	xaPost.Send()
 	sGet.Open()
 	sGet.Write(xaPost.responseBody)
-	sGet.SaveToFile Fname_, 2
+	sGet.SaveToFile var_filename, 2
 	sGet.Close
 End Sub
 
-Function ReadFile_(Fname_)		'读取文件到数组
-	Set FSO_ = CreateObject("Scripting.FileSystemObject")
-	Set FILE_ = FSO_.OpenTextFile(Fname_, 1)
+Function Readvar_file(var_filename)		'读取文件到数组
+	Set var_fso = CreateObject("Scripting.FileSystemObject")
+	Set var_file = var_fso.OpenTextFile(var_filename, 1)
 	i = 0
-	Do Until FILE_.AtEndOfStream
+	Do Until var_file.AtEndOfStream
 		redim preserve Arr_(i)
-		Arr_(i) = FILE_.ReadLine
+		Arr_(i) = var_file.ReadLine
 		i = i + 1
 	Loop
-	FILE_.Close
-	Set FSO_ = Nothing
- 	ReadFile_ = Arr_
+	var_file.Close
+	Set var_fso = Nothing
+ 	Readvar_file = Arr_
 End Function
 
-Sub CreateFolder_(Fname_)
-	Set FSO_ = CreateObject("Scripting.FileSystemObject")
-	Set FILE_ = FSO_.CreateFolder(Fname_)
-	Set FSO_ = Nothing
+Sub sub_createfolder(var_filename)
+	Set var_fso = CreateObject("Scripting.FileSystemObject")
+	Set var_file = var_fso.CreateFolder(var_filename)
+	Set var_fso = Nothing
 End Sub
 
 

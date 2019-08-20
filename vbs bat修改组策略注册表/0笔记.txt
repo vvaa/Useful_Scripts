@@ -1,0 +1,5 @@
+批处理修改注册表
+
+计算机上执行“secedit /export /CFG d:\tmp\sec.inf”命令，将计算机的本地安全策略配置导入“d:\tmp\sec.inf”安全模板文件中，这是一个文本文件。
+研究一下 ，就可以找到需要的设置，修改后使用“secedit /configure /db c:\secedit.sdb /CFG d:\tmp\sec.inf”命令，使用新的安全模板和安全数据库重新配置故障计算机的本地安全策略。 
+最后执行“secedit /refreshpolicy machine_policy /enforce”命令，强制在计算机上刷新策略设置
